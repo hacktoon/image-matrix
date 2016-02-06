@@ -9,10 +9,16 @@ def parse_command(expr):
     Expect a command expression (str)
         Example: "A 4 6"
     Return a tuple with the command name and the params (tuple)
-        Example: ('A', [4, 6])
+        Example: ('A', [4, 6]) or ('A', ['test.bmp'])
     '''
+    def clean(param):
+        try:
+            return int(param)
+        except ValueError:
+            return param
+
     cmd_alias, params = expr.split(maxsplit=1)
-    return cmd_alias, params.split()
+    return cmd_alias, [clean(x) for x in params.split()]
 
 
 def read_input(filename):

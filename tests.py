@@ -27,6 +27,16 @@ class InputTest(unittest.TestCase):
         ]
         fp.close()
 
+    def test_parse_command_num_params(self):
+        test_data = 'A 5 6'
+        result = editor.parse_command(test_data)
+        assert result == ('A', [5, 6])
+
+    def test_parse_command_file_params(self):
+        test_data = 'S img.bmp'
+        result = editor.parse_command(test_data)
+        assert result == ('S', ['img.bmp'])
+
     def test_error_on_input_reader(self):
         with self.assertRaises(IOError):
             editor.read_input('nowhere_file.txt')
