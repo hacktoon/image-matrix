@@ -36,6 +36,11 @@ class Matrix():
 
 
 class Context():
+    '''
+    Context in which Matrix functions are handled
+    Create and destroy Matrix instances
+    Map commands to the equivalent Matrix methods
+    '''
     def __init__(self, cls):
         self.cls = cls
         self.instance = None
@@ -47,6 +52,11 @@ class Context():
         self.instance = None
 
     def get_function(self, cmd_alias):
+        '''
+        Expect a command alias (str)
+            Example: 'I', 'C'...
+        Return a function relative to the cmd_alias (function)
+        '''
         try:
             cmd_name = CMD_MAP[cmd_alias.upper()]
         except KeyError:
@@ -61,9 +71,9 @@ class Context():
 def parse_command(expr):
     '''
     Expect a command expression (str)
-        Example: "A 4 6"
+        Example: "I 4 6"
     Return the command name and the params (tuple)
-        Example: ('A', [4, 6]) or ('A', ['test.bmp'])
+        Example: ('I', [4, 6]) or ('S', ['test.bmp'])
     '''
     def clean(param):
         try:
