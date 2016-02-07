@@ -25,7 +25,25 @@ class Matrix():
         for h in range(height):
             self.data[h] = ['O'] * width
 
-    def clear(self, _):
+    def __eq__(self, value):
+        return self.data == value
+
+    def get_at(self, x, y):
+        try:
+            return self.data[y-1][x-1]
+        except IndexError:
+            return
+
+    def set_at(self, x, y, value):
+        try:
+            self.data[y-1][x-1] = value
+        except IndexError:
+            return
+
+    def draw_pixel(self, x, y, color):
+        self.set_at(x, y, color)
+
+    def clear(self, *_):
         pass
 
     def __repr__(self):

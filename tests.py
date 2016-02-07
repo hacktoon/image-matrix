@@ -99,9 +99,39 @@ class ContextTest(unittest.TestCase):
 
 
 class MatrixTest(unittest.TestCase):
-    def test_matrix_dimensions(self):
-        m = editor.Matrix(4, 3)
-        assert m.data == [
+    def setUp(self):
+        self.matrix = editor.Matrix(4, 3)
+
+    def test_matrix_created(self):
+        assert self.matrix == [
+            ['O', 'O', 'O', 'O'],
+            ['O', 'O', 'O', 'O'],
+            ['O', 'O', 'O', 'O']]
+
+    def test_get_value(self):
+        self.matrix.set_at(2, 1, 'C')
+        assert self.matrix.get_at(2, 1) == 'C'
+
+    def test_get_value_invalid_cell(self):
+        assert self.matrix.get_at(20, 10) is None
+
+    def test_draw_pixel(self):
+        self.matrix.draw_pixel(2, 1, 'C')
+        assert self.matrix == [
+            ['O', 'C', 'O', 'O'],
+            ['O', 'O', 'O', 'O'],
+            ['O', 'O', 'O', 'O']]
+
+    def test_draw_pixel_max_values(self):
+        self.matrix.draw_pixel(4, 3, 'C')
+        assert self.matrix == [
+            ['O', 'O', 'O', 'O'],
+            ['O', 'O', 'O', 'O'],
+            ['O', 'O', 'O', 'C']]
+
+    def test_draw_pixel_incorrect_cell(self):
+        self.matrix.draw_pixel(20, 11, 'C')
+        assert self.matrix == [
             ['O', 'O', 'O', 'O'],
             ['O', 'O', 'O', 'O'],
             ['O', 'O', 'O', 'O']]
