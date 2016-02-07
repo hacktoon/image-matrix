@@ -48,7 +48,7 @@ class Context():
     def create(self, *params):
         self.instance = self.cls(*params)
 
-    def exit(self):
+    def exit(self, *params):
         self.instance = None
 
     def get_function(self, cmd_alias):

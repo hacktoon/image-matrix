@@ -55,6 +55,17 @@ class InputTest(unittest.TestCase):
         editor.run_command(ctx, 'C')
         mock_matrix.clear.assert_called_with([])
 
+    def test_run_command_create_matrix(self):
+        ctx = editor.Context(editor.Matrix)
+        ctx.create = MagicMock()
+        editor.run_command(ctx, 'I 3 4')
+        ctx.create.assert_called_with([3, 4])
+
+    def test_run_command_invalid_command(self):
+        ctx = editor.Context(editor.Matrix)
+        ctx.create(3, 4)
+        assert editor.run_command(ctx, 'Z') is None
+
 
 class ContextTest(unittest.TestCase):
     def setUp(self):
