@@ -47,5 +47,14 @@ class InputTest(unittest.TestCase):
             editor.read_input('nowhere_file.txt')
 
 
+class MatrixTest(unittest.TestCase):
+    def test_matrix_dimensions(self):
+        m = editor.Matrix(4, 3)
+        assert m.data == [
+            ['O', 'O', 'O', 'O'],
+            ['O', 'O', 'O', 'O'],
+            ['O', 'O', 'O', 'O']]
+
+
 if __name__ == '__main__':
     unittest.main()

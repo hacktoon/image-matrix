@@ -17,6 +17,21 @@ CMD_MAP = {
 }
 
 
+class Matrix():
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+        self.data = [[]] * height
+        for h in range(height):
+            self.data[h] = ['O'] * width
+
+    def __repr__(self):
+        output = []
+        for h in range(self.height):
+            output.append(', '.join(self.data[h]))
+        return '\n'.join(output)
+
+
 def parse_command(expr):
     '''
     Expect a command expression (str)
@@ -33,8 +48,7 @@ def parse_command(expr):
     try:
         cmd_alias, params = expr.split(maxsplit=1)
     except ValueError:
-        cmd_alias = expr
-        params = ''
+        cmd_alias, params = expr, ''
     params = [clean(x) for x in params.split()]
     return cmd_alias, params
 
