@@ -25,7 +25,7 @@ class Matrix():
         for h in range(height):
             self.data[h] = ['O'] * width
 
-    def clear(self):
+    def clear(self, _):
         pass
 
     def __repr__(self):
@@ -47,7 +47,10 @@ class Context():
         self.instance = None
 
     def get_function(self, cmd_alias):
-        cmd_name = CMD_MAP[cmd_alias.upper()]
+        try:
+            cmd_name = CMD_MAP[cmd_alias.upper()]
+        except KeyError:
+            raise ValueError('Command {!r} does not exist'.format(cmd_alias))
         if hasattr(self, cmd_name):
             return getattr(self, cmd_name)
         if not self.instance:
@@ -59,7 +62,7 @@ def parse_command(expr):
     '''
     Expect a command expression (str)
         Example: "A 4 6"
-    Return a tuple with the command name and the params (tuple)
+    Return the command name and the params (tuple)
         Example: ('A', [4, 6]) or ('A', ['test.bmp'])
     '''
     def clean(param):
@@ -85,17 +88,27 @@ def read_input(filename):
         return [x.strip() for x in f.readlines() if x.strip()]
 
 
-def main(command_list):
+def run_command(context, expr):
+    '''
+    Expect a run context instance (Context)
+    Expect a command expression (str)
+    '''
+    cmd_alias, params = parse_command(expr)
+    try:
+        func = context.get_function(cmd_alias)
+    except ValueError:
+        return
+    func(params)
+
+
+def main(command_lines):
     '''
     Expect a list of input commands (list)
+        Example: ['A 5 6', 'B 3 4']
     '''
     context = Context(Matrix)
-    for expr in command_list:
-        cmd_alias, params = parse_command(expr)
-        if cmd_alias not in CMD_MAP.keys():
-            continue
-        func = context.get_function(cmd_alias)
-        func(params)
+    for expr in command_lines:
+        run_command(context, expr)
 
 
 if __name__ == '__main__':

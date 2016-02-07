@@ -1,7 +1,8 @@
 # encoding: utf-8
 
-import unittest
 import tempfile
+import unittest
+from unittest.mock import MagicMock
 import editor_grafico as editor
 
 
@@ -46,6 +47,14 @@ class InputTest(unittest.TestCase):
         with self.assertRaises(IOError):
             editor.read_input('nowhere_file.txt')
 
+    def test_run_command_clear_matrix(self):
+        ctx = editor.Context(editor.Matrix)
+        ctx.create(3, 4)
+        mock_matrix = ctx.instance
+        mock_matrix.clear = MagicMock()
+        editor.run_command(ctx, 'C')
+        mock_matrix.clear.assert_called_with([])
+
 
 class ContextTest(unittest.TestCase):
     def setUp(self):
@@ -71,6 +80,11 @@ class ContextTest(unittest.TestCase):
         self.context.create(5, 6)
         func = self.context.get_function('C')
         assert func == self.context.instance.clear
+
+    def test_get_function_invalid_command(self):
+        self.context.create(5, 6)
+        with self.assertRaises(ValueError):
+            self.context.get_function('Z')
 
 
 class MatrixTest(unittest.TestCase):
