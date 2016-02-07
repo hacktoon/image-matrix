@@ -47,6 +47,32 @@ class InputTest(unittest.TestCase):
             editor.read_input('nowhere_file.txt')
 
 
+class ContextTest(unittest.TestCase):
+    def setUp(self):
+        self.context = editor.Context(editor.Matrix)
+
+    def test_executor_create(self):
+        self.context.create(4, 5)
+        assert isinstance(self.context.instance, editor.Matrix)
+
+    def test_executor_exit(self):
+        self.context.exit()
+        assert self.context.instance is None
+
+    def test_get_function_create(self):
+        func = self.context.get_function('I')
+        assert func == self.context.create
+
+    def test_get_function_non_initialized_matrix(self):
+        with self.assertRaises(ValueError):
+            self.context.get_function('C')
+
+    def test_get_function_initialized_matrix(self):
+        self.context.create(5, 6)
+        func = self.context.get_function('C')
+        assert func == self.context.instance.clear
+
+
 class MatrixTest(unittest.TestCase):
     def test_matrix_dimensions(self):
         m = editor.Matrix(4, 3)

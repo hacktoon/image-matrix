@@ -25,11 +25,34 @@ class Matrix():
         for h in range(height):
             self.data[h] = ['O'] * width
 
+    def clear(self):
+        pass
+
     def __repr__(self):
         output = []
         for h in range(self.height):
             output.append(', '.join(self.data[h]))
         return '\n'.join(output)
+
+
+class Context():
+    def __init__(self, cls):
+        self.cls = cls
+        self.instance = None
+
+    def create(self, *params):
+        self.instance = self.cls(*params)
+
+    def exit(self):
+        self.instance = None
+
+    def get_function(self, cmd_alias):
+        cmd_name = CMD_MAP[cmd_alias.upper()]
+        if hasattr(self, cmd_name):
+            return getattr(self, cmd_name)
+        if not self.instance:
+            raise ValueError('Instance not initialized')
+        return getattr(self.instance, cmd_name)
 
 
 def parse_command(expr):
@@ -66,11 +89,13 @@ def main(command_list):
     '''
     Expect a list of input commands (list)
     '''
+    context = Context(Matrix)
     for expr in command_list:
         cmd_alias, params = parse_command(expr)
         if cmd_alias not in CMD_MAP.keys():
             continue
-        print(cmd_alias, params)
+        func = context.get_function(cmd_alias)
+        func(params)
 
 
 if __name__ == '__main__':
