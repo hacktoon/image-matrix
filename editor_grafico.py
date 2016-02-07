@@ -4,6 +4,19 @@
 import sys
 
 
+CMD_MAP = {
+    'I': 'create',
+    'C': 'clear',
+    'L': 'draw_pixel',
+    'V': 'draw_vertical_line',
+    'H': 'draw_horizontal_line',
+    'K': 'draw_rectangle',
+    'F': 'fill_region',
+    'S': 'save_image',
+    'X': 'exit'
+}
+
+
 def parse_command(expr):
     '''
     Expect a command expression (str)
@@ -17,8 +30,13 @@ def parse_command(expr):
         except ValueError:
             return param
 
-    cmd_alias, params = expr.split(maxsplit=1)
-    return cmd_alias, [clean(x) for x in params.split()]
+    try:
+        cmd_alias, params = expr.split(maxsplit=1)
+    except ValueError:
+        cmd_alias = expr
+        params = ''
+    params = [clean(x) for x in params.split()]
+    return cmd_alias, params
 
 
 def read_input(filename):
@@ -36,6 +54,8 @@ def main(command_list):
     '''
     for expr in command_list:
         cmd_alias, params = parse_command(expr)
+        if cmd_alias not in CMD_MAP.keys():
+            continue
         print(cmd_alias, params)
 
 

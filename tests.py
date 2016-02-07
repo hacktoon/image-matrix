@@ -37,6 +37,11 @@ class InputTest(unittest.TestCase):
         result = editor.parse_command(test_data)
         assert result == ('S', ['img.bmp'])
 
+    def test_parse_command_no_param(self):
+        test_data = 'X'
+        result = editor.parse_command(test_data)
+        assert result == ('X', [])
+
     def test_error_on_input_reader(self):
         with self.assertRaises(IOError):
             editor.read_input('nowhere_file.txt')
