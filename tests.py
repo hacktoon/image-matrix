@@ -1,5 +1,6 @@
 # encoding: utf-8
 
+import os
 import tempfile
 import unittest
 from unittest.mock import MagicMock
@@ -171,6 +172,13 @@ class MatrixTest(unittest.TestCase):
             ['O', 'O', 'O', 'O'],
             ['O', 'O', 'O', 'O'],
             ['O', 'O', 'O', 'O']]
+
+    def test_save_image(self):
+        filename = 'test.bmp'
+        self.matrix.save_image(filename)
+        with open(filename) as f:
+            assert f.read() == 'OOOO\nOOOO\nOOOO'
+        os.remove(filename)
 
 
 if __name__ == '__main__':

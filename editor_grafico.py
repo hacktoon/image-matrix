@@ -53,10 +53,14 @@ class Matrix():
     def clear(self, *_):
         self.draw_rectangle(1, 1, self.width, self.height, 'O')
 
+    def save_image(self, filename):
+        with open(filename, 'w') as f:
+            f.write(str(self))
+
     def __repr__(self):
         output = []
         for h in range(self.height):
-            output.append(', '.join(self.data[h]))
+            output.append(''.join(self.data[h]))
         return '\n'.join(output)
 
 
