@@ -54,7 +54,7 @@ class Matrix():
         for y in range(y0, y1+1):
             self.set_at(x-1, y-1, color)
 
-    def draw_horizontal_line(self, y, x0, x1, color):
+    def draw_horizontal_line(self, x0, x1, y, color):
         for x in range(x0, x1+1):
             self.set_at(x-1, y-1, color)
 
@@ -64,6 +64,39 @@ class Matrix():
     def save_image(self, filename):
         with open(filename, 'w') as f:
             f.write(str(self))
+        print('Saved file {!r}'.format(filename))
+
+    def _get_adjacent_cells(self, x, y):
+        cells = []
+        positions = ((x+1, y),
+                     (x-1, y),
+                     (x, y+1),
+                     (x, y-1))
+
+        for x, y in positions:
+            if x < 0 or y < 0:
+                continue
+            try:
+                self.get_at(x, y)
+            except IndexError:
+                continue
+            cells.append((x, y))
+        return cells
+
+    def _flood_fill(self, x, y, visited, color):
+        if (x, y) in visited:
+            return
+        visited.append((x, y))
+        prev_color = self.get_at(x, y)
+        self.set_at(x, y, color)
+        for cell in self._get_adjacent_cells(x, y):
+            if prev_color != self.get_at(cell[0], cell[1]):
+                continue
+            self._flood_fill(cell[0], cell[1], visited, color)
+
+    def fill_region(self, x, y, color):
+        visited = []
+        self._flood_fill(x-1, y-1, visited, color)
 
     def __repr__(self):
         output = []
@@ -145,7 +178,7 @@ def run_command(context, expr):
         func = context.get_function(cmd_alias)
     except ValueError:
         return
-    func(params)
+    func(*params)
 
 
 def main(command_lines):

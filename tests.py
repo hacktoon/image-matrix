@@ -53,13 +53,13 @@ class InputTest(unittest.TestCase):
         mock_matrix = ctx.instance
         mock_matrix.clear = MagicMock()
         editor.run_command(ctx, 'C')
-        mock_matrix.clear.assert_called_with([])
+        mock_matrix.clear.assert_called_with()
 
     def test_run_command_create_matrix(self):
         ctx = editor.Context(editor.Matrix)
         ctx.create = MagicMock()
         editor.run_command(ctx, 'I 3 4')
-        ctx.create.assert_called_with([3, 4])
+        ctx.create.assert_called_with(3, 4)
 
     def test_run_command_invalid_command(self):
         ctx = editor.Context(editor.Matrix)
@@ -187,16 +187,50 @@ class MatrixTest(unittest.TestCase):
             ['O', 'O', 'O', 'O']]
 
     def test_draw_horizontal_line(self):
-        self.matrix.draw_horizontal_line(2, 1, 4, 'C')
+        self.matrix.draw_horizontal_line(1, 4, 2, 'C')
         assert self.matrix == [
             ['O', 'O', 'O', 'O'],
             ['C', 'C', 'C', 'C'],
             ['O', 'O', 'O', 'O']]
 
     def test_draw_horizontal_line_off_limits(self):
-        self.matrix.draw_horizontal_line(2, 1, 40, 'C')
+        self.matrix.draw_horizontal_line(1, 40, 2, 'C')
         assert self.matrix == [
             ['O', 'O', 'O', 'O'],
+            ['C', 'C', 'C', 'C'],
+            ['O', 'O', 'O', 'O']]
+
+    def test_fill_region(self):
+        self.matrix.draw_horizontal_line(1, 4, 2, 'C')
+        self.matrix.fill_region(1, 1, 'A')
+        assert self.matrix == [
+            ['A', 'A', 'A', 'A'],
+            ['C', 'C', 'C', 'C'],
+            ['O', 'O', 'O', 'O']]
+
+    def test_fill_region_with_half_segment(self):
+        self.matrix.draw_horizontal_line(1, 2, 2, 'C')
+        self.matrix.fill_region(1, 1, 'A')
+        assert self.matrix == [
+            ['A', 'A', 'A', 'A'],
+            ['C', 'C', 'A', 'A'],
+            ['A', 'A', 'A', 'A']]
+
+    def test_fill_region_different_colors(self):
+        self.matrix.draw_horizontal_line(1, 2, 2, 'C')
+        self.matrix.draw_vertical_line(4, 1, 3, 'E')
+        self.matrix.fill_region(3, 1, 'Z')
+        assert self.matrix == [
+            ['Z', 'Z', 'Z', 'E'],
+            ['C', 'C', 'Z', 'E'],
+            ['Z', 'Z', 'Z', 'E']]
+
+    def test_fill_region_single_cell_area(self):
+        self.matrix.draw_horizontal_line(1, 4, 2, 'C')
+        self.matrix.draw_vertical_line(2, 1, 1, 'E')
+        self.matrix.fill_region(1, 1, 'Z')
+        assert self.matrix == [
+            ['Z', 'E', 'O', 'O'],
             ['C', 'C', 'C', 'C'],
             ['O', 'O', 'O', 'O']]
 
