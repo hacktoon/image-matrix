@@ -1,0 +1,10 @@
+I 10 9
+L 5 3 A
+G 2 3 J
+V 2 3 4 W
+H 1 10 5 Z
+F 3 3 J
+K 2 7 8 8 E
+F 9 9 R
+S one.bmp
+X
