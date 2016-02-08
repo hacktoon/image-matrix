@@ -50,6 +50,14 @@ class Matrix():
     def draw_pixel(self, x, y, color):
         self.set_at(x, y, color)
 
+    def draw_vertical_line(self, x, y0, y1, color):
+        for y in range(y0, y1+1):
+            self.set_at(x, y, color)
+
+    def draw_horizontal_line(self, y, x0, x1, color):
+        for x in range(x0, x1+1):
+            self.set_at(x, y, color)
+
     def clear(self, *_):
         self.draw_rectangle(1, 1, self.width, self.height, 'O')
 

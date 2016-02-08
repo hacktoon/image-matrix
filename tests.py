@@ -173,6 +173,34 @@ class MatrixTest(unittest.TestCase):
             ['O', 'O', 'O', 'O'],
             ['O', 'O', 'O', 'O']]
 
+    def test_draw_vertical_line(self):
+        self.matrix.draw_vertical_line(1, 1, 2, 'C')
+        assert self.matrix == [
+            ['C', 'O', 'O', 'O'],
+            ['C', 'O', 'O', 'O'],
+            ['O', 'O', 'O', 'O']]
+
+    def test_draw_vertical_line_wrong_range(self):
+        self.matrix.draw_vertical_line(1, 3, 2, 'C')
+        assert self.matrix == [
+            ['O', 'O', 'O', 'O'],
+            ['O', 'O', 'O', 'O'],
+            ['O', 'O', 'O', 'O']]
+
+    def test_draw_horizontal_line(self):
+        self.matrix.draw_horizontal_line(2, 1, 4, 'C')
+        assert self.matrix == [
+            ['O', 'O', 'O', 'O'],
+            ['C', 'C', 'C', 'C'],
+            ['O', 'O', 'O', 'O']]
+
+    def test_draw_horizontal_line_off_limits(self):
+        self.matrix.draw_horizontal_line(2, 1, 40, 'C')
+        assert self.matrix == [
+            ['O', 'O', 'O', 'O'],
+            ['C', 'C', 'C', 'C'],
+            ['O', 'O', 'O', 'O']]
+
     def test_save_image(self):
         filename = 'test.bmp'
         self.matrix.save_image(filename)
