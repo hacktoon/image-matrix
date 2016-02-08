@@ -33,30 +33,30 @@ class Matrix():
             return
         for y in range(y0, y1+1):
             for x in range(x0, x1+1):
-                self.set_at(x, y, color)
+                self.set_at(x-1, y-1, color)
 
     def get_at(self, x, y):
         try:
-            return self.data[y-1][x-1]
+            return self.data[y][x]
         except IndexError:
             return
 
     def set_at(self, x, y, value):
         try:
-            self.data[y-1][x-1] = value
+            self.data[y][x] = value
         except IndexError:
             return
 
     def draw_pixel(self, x, y, color):
-        self.set_at(x, y, color)
+        self.set_at(x-1, y-1, color)
 
     def draw_vertical_line(self, x, y0, y1, color):
         for y in range(y0, y1+1):
-            self.set_at(x, y, color)
+            self.set_at(x-1, y-1, color)
 
     def draw_horizontal_line(self, y, x0, x1, color):
         for x in range(x0, x1+1):
-            self.set_at(x, y, color)
+            self.set_at(x-1, y-1, color)
 
     def clear(self, *_):
         self.draw_rectangle(1, 1, self.width, self.height, 'O')
