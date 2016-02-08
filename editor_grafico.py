@@ -28,6 +28,13 @@ class Matrix():
     def __eq__(self, value):
         return self.data == value
 
+    def draw_rectangle(self, x0, y0, x1, y1, color):
+        if x1 < x0 or y1 < y0:
+            return
+        for y in range(y0, y1+1):
+            for x in range(x0, x1+1):
+                self.set_at(x, y, color)
+
     def get_at(self, x, y):
         try:
             return self.data[y-1][x-1]
@@ -44,7 +51,7 @@ class Matrix():
         self.set_at(x, y, color)
 
     def clear(self, *_):
-        pass
+        self.draw_rectangle(1, 1, self.width, self.height, 'O')
 
     def __repr__(self):
         output = []

@@ -136,6 +136,42 @@ class MatrixTest(unittest.TestCase):
             ['O', 'O', 'O', 'O'],
             ['O', 'O', 'O', 'O']]
 
+    def test_draw_rectangle_3_2(self):
+        self.matrix.draw_rectangle(1, 1, 3, 2, 'C')
+        assert self.matrix == [
+            ['C', 'C', 'C', 'O'],
+            ['C', 'C', 'C', 'O'],
+            ['O', 'O', 'O', 'O']]
+
+    def test_draw_rectangle_size_one(self):
+        self.matrix.draw_rectangle(1, 1, 1, 1, 'C')
+        assert self.matrix == [
+            ['C', 'O', 'O', 'O'],
+            ['O', 'O', 'O', 'O'],
+            ['O', 'O', 'O', 'O']]
+
+    def test_draw_rectangle_wrong_values(self):
+        self.matrix.draw_rectangle(3, 4, 1, 1, 'C')
+        assert self.matrix == [
+            ['O', 'O', 'O', 'O'],
+            ['O', 'O', 'O', 'O'],
+            ['O', 'O', 'O', 'O']]
+
+    def test_draw_rectangle_exceed_limit(self):
+        self.matrix.draw_rectangle(1, 1, 10, 10, 'C')
+        assert self.matrix == [
+            ['C', 'C', 'C', 'C'],
+            ['C', 'C', 'C', 'C'],
+            ['C', 'C', 'C', 'C']]
+
+    def test_clear(self):
+        self.matrix.draw_rectangle(1, 1, 3, 2, 'C')
+        self.matrix.clear()
+        assert self.matrix == [
+            ['O', 'O', 'O', 'O'],
+            ['O', 'O', 'O', 'O'],
+            ['O', 'O', 'O', 'O']]
+
 
 if __name__ == '__main__':
     unittest.main()
